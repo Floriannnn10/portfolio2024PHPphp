@@ -1,0 +1,48 @@
+/* Styles généraux */
+.contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.contact .container {
+    max-width: 100%;
+}
+
+.contact img {
+    max-width: 100%;
+    height: auto;
+}
+
+.contact .form-group {
+    margin-bottom: 20px;
+}
+
+.contact .bouton {
+    margin-top: 20px;
+}
+
+.reseaux {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Media queries pour rendre responsive */
+@media (min-width: 768px) {
+    .contact {
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: flex-start;
+    }
+
+    .contact .container {
+        max-width: 45%; /* Ajuster la largeur si nécessaire */
+        margin-right: 20px;
+    }
+
+    .reseaux {
+        margin-top: 40px;
+    }
+}
