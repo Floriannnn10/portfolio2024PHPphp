@@ -1,3 +1,17 @@
+<?php
+$to_email = "bangageorgesemmanuel10@gmail.com";
+$subject = "Test Email via PHP";
+$body = "Si tu vois ce message, cela signifie que tu as reussi.";
+$headers = "From: bangageorgesemmanuel.12@gmail.com";
+
+if (mail($to_email, $subject, $body, $headers)) {
+    echo "Email successfully sent to $to_email...";
+} else {
+    echo "Email sending failed...";
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,7 +45,7 @@
         </div>
 
         <div class="container mt-5" style="margin-right:150px">
-            <form action="send_mail.php" method="post">
+            <form action="contact.php" method="post">
                 <div class="form-group">
                     <label for="name"></label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="Votre Nom" required>
