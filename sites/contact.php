@@ -1,16 +1,37 @@
 <?php
-$to_email = "bangageorgesemmanuel10@gmail.com";
-$subject = "Test Email via PHP";
-$body = "Si tu vois ce message, cela signifie que tu as reussi.";
-$headers = "From: bangageorgesemmanuel.12@gmail.com";
+// Connexion à la base de données
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "portfolio_php";
 
-if (mail($to_email, $subject, $body, $headers)) {
-    echo "Email successfully sent to $to_email...";
-} else {
-    echo "Email sending failed...";
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // echo "Connexion réussie";
+} catch (PDOException $e) {
+    echo "La connexion a échoué: " . $e->getMessage();
+}
+
+$messageEnvoye = false;
+
+if (isset($_POST['envoyer'])) {
+    $nom = $_POST['nom'];
+    $email = $_POST['email'];
+    $objet = $_POST['objet'];
+    $message = $_POST['message'];
+
+    $sql = "INSERT INTO utlisateur_send (nom, email, objet, message) VALUES (:nom, :email, :objet, :message)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':nom', $nom);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':objet', $objet);
+    $stmt->bindParam(':message', $message);
+    if ($stmt->execute()) {
+        $messageEnvoye = true;
+    }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,6 +56,12 @@ if (mail($to_email, $subject, $body, $headers)) {
     <!-- formulaire contact  -->
     <h2 class="Question-Formulaire" style="text-align:center;">Si vous avez des questions <br> n'hésitez pas à me laisser un message.</h2>
 
+    <?php if ($messageEnvoye) : ?>
+        <div class="alert alert-success" role="alert" style="text-align:center;">
+            Votre message a été envoyé avec succès.
+        </div>
+    <?php endif; ?>
+
     <div class="contact">
         <div class="container">
             <div class="row justify-content">
@@ -47,25 +74,23 @@ if (mail($to_email, $subject, $body, $headers)) {
         <div class="container mt-5" style="margin-right:150px">
             <form action="contact.php" method="post">
                 <div class="form-group">
-                    <label for="name"></label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Votre Nom" required>
+                    <label for="nom"></label>
+                    <input type="text" class="form-control" id="nom" name="nom" placeholder="Votre Nom" required>
                 </div>
                 <div class="form-group">
                     <label for="email"></label>
                     <input type="email" class="form-control" id="email" name="email" placeholder="Votre Email" required>
                 </div>
                 <div class="form-group">
-                    <label for="subject"></label>
-                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Objet" required>
+                    <label for="objet"></label>
+                    <input type="text" class="form-control" id="objet" name="objet" placeholder="Objet" required>
                 </div>
                 <div class="form-group">
                     <label for="message"></label>
                     <textarea class="form-control" id="message" name="message" rows="5" placeholder="Message" required></textarea>
                 </div>
-                <div name="envoyer" id="envoyer" class="boutton-envoyer" style="text-align:center;">
-                    <div class="bouton">
-                        <a style="margin-left: 30px;" href="#"><button>Envoyer</button></a>
-                    </div>
+                <div class="bouton">
+                    <button type="submit" name="envoyer" id="envoyer" class="boutton-envoyer">Envoyer</button>
                 </div>
             </form>
         </div>
